@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Zhou Zuq">
+
+
+
+
+
+<title>Tag | Hello~</title>
+
+
+
+    <link rel="icon" href="/%E8%B0%B7%E7%B2%89%E5%AD%A6%E6%9C%AF.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/css/search.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <div class="search-popup">
+  <div class="search-overlay" onclick="closeSearchPopup()"></div>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search..." autofocus>
+    <div id="search-result" class="search-result-list"></div>
+  </div>
+</div>
+
+<!-- 加载本地 search.xml 数据 -->
+<script>
+function closeSearchPopup() {
+  document.querySelector('.search-popup').classList.remove('active');
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById('search-input');
+  const resultContainer = document.getElementById('search-result');
+  let searchData = [];
+
+  // 加载 search.xml 并解析数据
+  fetch('/search.xml')
+    .then(res => res.text())
+    .then(xmlText => {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlText, 'text/xml');
+      const entries = xml.getElementsByTagName('entry');
+      for (let entry of entries) {
+        searchData.push({
+          title: entry.getElementsByTagName('title')[0]?.textContent || '',
+          content: entry.getElementsByTagName('content')[0]?.textContent || '',
+          url: entry.getElementsByTagName('url')[0]?.textContent || ''
+        });
+      }
+    });
+
+  // 搜索逻辑绑定
+  input.addEventListener('input', function () {
+    const keyword = this.value.trim().toLowerCase();
+    resultContainer.innerHTML = '';
+    if (!keyword) return;
+
+    const results = searchData.filter(data =>
+      data.title.toLowerCase().includes(keyword) ||
+      data.content.toLowerCase().includes(keyword)
+    );
+
+    if (results.length === 0) {
+      resultContainer.innerHTML = '<p>No results found.</p>';
+      return;
+    }
+
+    const html = results.map(item => {
+      return `<p><a href="${item.url}">${item.title}</a></p>`;
+    }).join('');
+    resultContainer.innerHTML = html;
+  });
+});
+</script>
+
+<style>
+.search-popup {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.search-popup.active {
+  display: block;
+}
+.search-overlay {
+  position: absolute;
+  inset: 0;
+}
+.search-box {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 2em;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+}
+#search-input {
+  width: 100%;
+  padding: 0.8em;
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.search-result-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.search-result-list p {
+  margin: 0.5em 0;
+}
+</style>
+
+            <div class="main">
+                
+
+    <div class="container">
+        <div class="post-wrap tags">
+            <h2 class="post-title">-&nbsp;Tag Cloud&nbsp;-</h2>
+
+            <div class="tag-cloud-tags">
+                
+            </div>
+        </div>
+    </div>
+
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Zhou Zuq | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
