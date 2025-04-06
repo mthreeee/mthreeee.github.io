@@ -13,7 +13,7 @@
 
 
 
-<title>Tag | Hello~</title>
+<title>tag | Hello~</title>
 
 
 
@@ -25,8 +25,6 @@
     <!-- stylesheets list from _config.yml -->
     
     <link rel="stylesheet" href="/css/style.css">
-    
-    <link rel="stylesheet" href="/css/search.css">
     
 
 
@@ -68,108 +66,63 @@
     </script>
 
     <div class="wrapper">
-        <div class="search-popup">
-  <div class="search-overlay" onclick="closeSearchPopup()"></div>
-  <div class="search-box">
-    <input type="text" id="search-input" placeholder="Search..." autofocus>
-    <div id="search-result" class="search-result-list"></div>
-  </div>
-</div>
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Zhou Zuq&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
 
-<!-- 加载本地 search.xml 数据 -->
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Zhou Zuq&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
 <script>
-function closeSearchPopup() {
-  document.querySelector('.search-popup').classList.remove('active');
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const input = document.getElementById('search-input');
-  const resultContainer = document.getElementById('search-result');
-  let searchData = [];
-
-  // 加载 search.xml 并解析数据
-  fetch('/search.xml')
-    .then(res => res.text())
-    .then(xmlText => {
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(xmlText, 'text/xml');
-      const entries = xml.getElementsByTagName('entry');
-      for (let entry of entries) {
-        searchData.push({
-          title: entry.getElementsByTagName('title')[0]?.textContent || '',
-          content: entry.getElementsByTagName('content')[0]?.textContent || '',
-          url: entry.getElementsByTagName('url')[0]?.textContent || ''
-        });
-      }
-    });
-
-  // 搜索逻辑绑定
-  input.addEventListener('input', function () {
-    const keyword = this.value.trim().toLowerCase();
-    resultContainer.innerHTML = '';
-    if (!keyword) return;
-
-    const results = searchData.filter(data =>
-      data.title.toLowerCase().includes(keyword) ||
-      data.content.toLowerCase().includes(keyword)
-    );
-
-    if (results.length === 0) {
-      resultContainer.innerHTML = '<p>No results found.</p>';
-      return;
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
     }
-
-    const html = results.map(item => {
-      return `<p><a href="${item.url}">${item.title}</a></p>`;
-    }).join('');
-    resultContainer.innerHTML = html;
-  });
-});
 </script>
-
-<style>
-.search-popup {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-.search-popup.active {
-  display: block;
-}
-.search-overlay {
-  position: absolute;
-  inset: 0;
-}
-.search-box {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  padding: 2em;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
-}
-#search-input {
-  width: 100%;
-  padding: 0.8em;
-  font-size: 1.1em;
-  margin-bottom: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.search-result-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-.search-result-list p {
-  margin: 0.5em 0;
-}
-</style>
-
             <div class="main">
                 
 
